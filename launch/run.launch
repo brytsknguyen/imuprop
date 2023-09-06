@@ -1,0 +1,20 @@
+<launch>
+
+    <arg name="bag_file" default="/media/tmn/mySataSSD2/tutorial.bag"/>
+    <!-- <arg name="bag_file" default=""/> -->
+    <!-- <arg name="bag_file" default=""/> -->
+
+    <!-- Add the imu prop node -->
+    <node pkg="imuprop" type="imuprop_node" name="imuprop" output="screen"/>
+    
+    <!-- Play the data -->
+    <node required="false" pkg="rosbag" type="play" name="rosbag_player"
+          args="--clock $(arg bag_file) -r 1.0 -s 0.0">
+    </node>
+
+    <node pkg="rviz" type="rviz" name="rviz_slam" respawn="true" output="log"
+          args="-d $(find imuprop)/launch/mcdviral.rviz" />
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf_br" args="49.254495621 107.379453659 7.591092467 -41 0 0 map odom" />
+
+</launch>
